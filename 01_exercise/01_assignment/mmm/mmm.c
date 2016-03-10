@@ -13,7 +13,7 @@
 
 #define NUM_RUNS 1
 #define CYCLES_REQUIRED 1e8
-#define FREQUENCY 3.4e9
+#define FREQUENCY 3.1e9
 #define CALIBRATE
 
 unsigned short int n;
@@ -272,6 +272,41 @@ int main(int argc, char **argv){
       printf("Windows QueryPerformanceCounter() function:\n %lf cycles measured => %lf seconds, with reported CPU frequency %lf MHz\n\n",p,p/f.QuadPart,(double)f.QuadPart/1000);
 #endif
   }
+  else if (argc==3){
+      unsigned short int nrep;
+      n = atoi(argv[1]);
+      nrep = atoi(argv[2]);
+      
+      for(int k = 0; k < nrep; ++k){
+          printf("n=%d \n",n);
+          B = (double *)malloc(n*n*sizeof(double));
+          C = (double *)malloc(n*n*sizeof(double));
+          A = (double *)calloc(n*n,sizeof(double));
+  
+          init_mat(B);
+          init_mat(C);
+  
+          r = rdtsc();
+          c = c_clock();
+        
+          FILE *fp;
+          fp = fopen("/home/mfuhr/hwfc/01_exercise/01_assignment/mmm/consistancy_01.txt", "a");
+        
+#ifndef WIN32
+          t = timeofday();
+#else
+          t = gettickcount();
+          
+          QueryPerformanceFrequency((LARGE_INTEGER *)&f);
+
+          p = queryperfcounter(f);
+          fprintf(fp, "%d\t%f\t%f\t%f\t%f\n", k, r, c, t, p);
+#endif       
+          fprintf(fp, "%d\t%f\t%f\t%f\t%d\n", k, r, c, t, 0);
+
+          fclose(fp);
+      }     
+  }
   else if (argc==4) {
       unsigned short int nstart;
       unsigned short int nsteps;
@@ -294,7 +329,7 @@ int main(int argc, char **argv){
           c = c_clock();
         
           FILE *fp;
-          fp = fopen("/home/mfuhr/hwfc/01_exercise/01_assignment/mmm/test.txt", "a");
+          fp = fopen("/home/mfuhr/hwfc/01_exercise/01_assignment/mmm/preformance_01.txt", "a");
         
 #ifndef WIN32
           t = timeofday();
