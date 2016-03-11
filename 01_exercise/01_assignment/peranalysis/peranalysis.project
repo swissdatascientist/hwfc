@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CodeLite_Project Name="peranalysis" InternalType="Console">
+<CodeLite_Project Name="ex5" InternalType="Console">
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
     <File Name="tsc_x86.h"/>
-    <File Name="mmm.c"/>
+    <File Name="compute.c"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>
